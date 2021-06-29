@@ -4,5 +4,5 @@ import 'package:flutter_bloc_api/model/WeatherResponse.dart';
 class Repository {
   ApiProvider appApiProvider = ApiProvider();
 
-  Future<WeatherResponse> fetchLondonWeather() => appApiProvider.fetchLondonWeather();
+  Future<WeatherResponse> fetchWeather(String cityName) => appApiProvider.fetchWeather(cityName);
 }

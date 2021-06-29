@@ -9,8 +9,8 @@ class WeatherBloc {
 
   Stream<WeatherResponse> get weather => _weatherFetcher.stream;
 
-  fetchLondonWeather() async {
-    WeatherResponse weatherResponse = await _repository.fetchLondonWeather();
+  fetchWeather(String city) async {
+    WeatherResponse weatherResponse = await _repository.fetchWeather(city);
     _weatherFetcher.sink.add(weatherResponse);
   }
 

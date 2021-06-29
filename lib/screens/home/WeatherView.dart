@@ -5,9 +5,10 @@ import 'package:flutter_bloc_api/model/WeatherResponse.dart';
 import 'package:flutter_bloc_api/screens/home/WeatherBloc.dart';
 import 'package:flutter_bloc_api/screens/home/widgets/TopBar.dart';
 import 'package:flutter_bloc_api/screens/home/widgets/backgroundImage.dart';
+import 'package:flutter_bloc_api/screens/home/widgets/chart.dart';
 import 'package:flutter_bloc_api/screens/home/widgets/dailyList.dart';
+import 'package:flutter_bloc_api/screens/search/search_screen.dart';
 import 'package:flutter_bloc_api/utility/utilitiy.dart';
-import 'package:intl/intl.dart';
 
 class WeatherView extends StatefulWidget {
   const WeatherView({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class WeatherView extends StatefulWidget {
 class _WeatherViewState extends State<WeatherView> {
   @override
   Widget build(BuildContext context) {
-    weatherBloc.fetchLondonWeather();
+    weatherBloc.fetchWeather("Sanandaj");
     var screenSize = MediaQuery.of(context).size;
     String backgroundImage = "lib/res/bluesky.png";
     double hourlyItemWidth = 120;
@@ -127,37 +128,33 @@ class _WeatherViewState extends State<WeatherView> {
                                   14 *
                                   2.5,
                             ),
-
-
-Container(
-  height: 200,
-  child:   Stack(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1.70,
-            child: Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                  color: Colors.transparent),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
-                child: LineChart(
-                  mainData(weather),
-                ),
-              ),
-            ),
-          ),
-        ]
-  ),
-)
-
-
-
-
-
-
+                            Container(height: 32,),
+                            Container(
+                              width: screenSize.width - 40,
+                              alignment: Alignment.center,
+                              child: Stack(children: <Widget>[
+                                AspectRatio(
+                                  aspectRatio: 1.70,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(18),
+                                        ),
+                                        color: Colors.transparent),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 18.0,
+                                          left: 12.0,
+                                          top: 24,
+                                          bottom: 12),
+                                      child: LineChart(
+                                        ChartView(weather),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            )
                           ],
                         )
                       ],
@@ -174,117 +171,4 @@ Container(
           return Center(child: CircularProgressIndicator());
         });
   }
-
-    List<Color> gradientColors = [
-    AppTheme.blueColor,
-    // Colors.white,
-  ];
-
-  LineChartData mainData(WeatherResponse weather) {
-    WeatherResponse _weather = weather;
-
-    double getLowestTemp(List<Forecastday> forecastDays) {
-      double lowestTemp = 100;
-      for (var forecastDay in forecastDays) {
-        if (forecastDay.day.mintempC < lowestTemp) {
-          lowestTemp = forecastDay.day.mintempC;
-        }
-      }
-      return lowestTemp;
-    }
-
-    double getHighestTemp(List<Forecastday> forecastDays) {
-      double highTemp = -100;
-      for (var forecastDay in forecastDays) {
-        if (forecastDay.day.mintempC > highTemp) {
-          highTemp = forecastDay.day.maxtempC;
-        }
-      }
-      return highTemp;
-    }
-
-    double getAverageTemp(List<Forecastday> forecastDays) {
-      double min = getLowestTemp(forecastDays);
-      double max = getHighestTemp(forecastDays);
-      return min + max / 2;
-    }
-
-    return LineChartData(
-      lineTouchData: LineTouchData(touchTooltipData: LineTouchTooltipData(tooltipBgColor: AppTheme.GlassyColor)),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          getTextStyles: (value) =>
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'Mar';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return (getLowestTemp(_weather.forecast.forecastday) - 2).toString() + "°";
-              case 3:
-                return getAverageTemp(_weather.forecast.forecastday).toString() + "°";
-              case 5:
-                return getHighestTemp(_weather.forecast.forecastday).toString() + "°";
-            }
-            return '';
-          },
-          reservedSize: 28,
-          margin: 12,
-        ),
-      ),
-      borderData:
-          FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 0)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ] ,
-          isCurved: true,
-          colors: [Colors.white],
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-          ),
-        ),
-      ],
-    );
-  }
 }
-
-

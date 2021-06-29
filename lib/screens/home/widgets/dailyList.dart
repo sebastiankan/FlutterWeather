@@ -34,12 +34,14 @@ class HourlyList extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(6)))),
                         Container(
+                          alignment: Alignment.center,
                           padding: EdgeInsets.only(top: 8, bottom: 8),
                           child: Row(
                             children: [
                               Column(
                                 children: [
                                   Container(
+                                    width: hourlyItemWidth - 16,
                                     child: Text(
                                         DateFormat('HH:mm').format(
                                             DateTime.fromMillisecondsSinceEpoch(
@@ -65,7 +67,7 @@ class HourlyList extends StatelessWidget {
                 );
               }).toList(),
       ),
-      height: 130,
+      height: 120,
     );
   }
 }

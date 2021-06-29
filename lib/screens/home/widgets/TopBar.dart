@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_api/model/WeatherResponse.dart';
+import 'package:flutter_bloc_api/screens/search/search_screen.dart';
 
 
 class TopBar extends StatelessWidget {
@@ -16,7 +18,9 @@ class TopBar extends StatelessWidget {
       children: [
         Row(children: [
           IconButton(
-            onPressed: ()=> {}, 
+            onPressed: ()=> {
+              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=> SearchScreen(), fullscreenDialog: true))
+            }, 
             icon: Icon(Icons.search, color: Colors.white,)
           ),
         ],

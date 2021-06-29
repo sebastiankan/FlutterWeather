@@ -58,12 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      body: WeatherView(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=> {},
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: WeatherView(),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -8,10 +8,10 @@ class ApiProvider {
       "https://api.weatherapi.com/v1/";
   final _forcast = "forecast.json";
 
-  Future<WeatherResponse> fetchLondonWeather() async {
+  Future<WeatherResponse> fetchWeather(String cityName) async {
     Map<String, String> jsonMap = {
       'key':'06a7c8c3b527432fb1142703213105',
-      'q':'sanandaj',
+      'q': cityName,
       'days':'7',
       'api':'no',
       'alerts':'no'
